@@ -1,0 +1,15 @@
+.App {
+  margin: 50px 50px 0 50px;
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+.language-js {
+  white-space: normal;
+}
+
+.Block {
+  margin-bottom: 20px;
+}
