@@ -9,7 +9,7 @@ export default class Formula extends Base {
 
     const subscribeToArg = (arg) => {
       if (arg._isFormulante) {
-        arg.on('change', () => { return this.trigger('change') })
+        arg.on('change', () => { return this.emit('change') })
       }
     }
     args.forEach(subscribeToArg);

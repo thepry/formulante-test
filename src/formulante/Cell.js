@@ -9,7 +9,7 @@ export default class Cell extends Base {
 
   set(val) {
     this._value = val;
-    this.trigger('change');
+    this.emit('change');
 
     return this;
   }
