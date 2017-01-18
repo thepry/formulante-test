@@ -1,15 +1,16 @@
 import Base from './Base'
 
 export default class Cell extends Base {
-  constructor(initialValue, getter = (x) => x) {
+  constructor(initialValue, getter = (val) => { return val }) {
     super();
     this._value = initialValue;
-    this.value = () => getter(this._value);
+    this.value = () => { return getter(this._value) };
   }
 
-  set = (val) => {
+  set(val) {
     this._value = val;
     this.trigger('change');
+
     return this;
-  };
+  }
 }

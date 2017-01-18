@@ -3,19 +3,23 @@ import Base from './Base'
 export default class Formula extends Base {
   constructor(getter, ...args) {
     super();
-    this.value = () => getter(...this.mapArgs(args));
-    args.forEach(this._subscribeToArg);
-  }
+    this.value = () => {
+      return getter(...this.mapArgs(args))
+    };
 
-  _subscribeToArg = (arg) => {
-    if (arg._isFormulante) {
-      arg.on('change', () => this.trigger('change'))
+    const subscribeToArg = (arg) => {
+      if (arg._isFormulante) {
+        arg.on('change', () => { return this.trigger('change') })
+      }
     }
+    args.forEach(subscribeToArg);
   }
 
-  mapArgs = (args) => {
+  mapArgs(args) {
     return args.map(
-      (arg) => arg._isFormulante ? arg.value() : arg
+      (arg) => {
+        return arg._isFormulante ? arg.value() : arg;
+      }
     );
   }
 }

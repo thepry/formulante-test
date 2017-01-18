@@ -4,41 +4,40 @@ import './App.css';
 
 import { Cell, Formula } from './formulante'
 
-let name = new Cell('Eugene')
-let greetings = new Cell('Hello', (v) => v.toUpperCase());
-let greetingsMessage = new Formula((greetings, name) => `${greetings}, ${name}!`, greetings, name)
-let finalMessage = new Formula((greetingsMessage) => `${greetingsMessage} Now you see how it works.`, greetingsMessage)
+const name = new Cell('Eugene')
+const greetings = new Cell('Hello', (val) => { return val.toUpperCase() });
+const greetingsMessage = new Formula((greeting, userName) => { return `${greeting}, ${userName}!` }, greetings, name)
+const finalMessage = new Formula((greetingMessage) => { return `${greetingMessage} Now you see how it works.` }, greetingsMessage)
 
-let nameMarkdown = `
+const initialText = 'This is proof of concept for reactive programming components in Javascript. Each of react components listents to its owns object changes and updates on change event.'
+
+const nameMarkdown = `
   \`\`\`js
     let name = new Cell('Eugene')
   \`\`\`
 `
 
-let greetingsMarkdown = `
+const greetingsMarkdown = `
   \`\`\`js
     let greetings = new Cell('Hello', (v) => v.toUpperCase());
   \`\`\`
 `
 
-let greetingsMessageMarkdown = `
+const greetingsMessageMarkdown = `
   \`\`\`js
-    let greetingsMessage = new Formula((greetings, name) => \`\${greetings}\, \${name}\!\`, greetings, name)
+    let greetingsMessage = new Formula((greetings, name) => \`\${greetings}, \${name}!\`, greetings, name)
   \`\`\`
 `
-let finalMessageMarkdown = `
+const finalMessageMarkdown = `
   \`\`\`js
-    let finalMessage = new Formula((greetingsMessage) => \`\${greetingsMessage}\ Now you see how it works.\`, greetingsMessage)
+    let finalMessage = new Formula((greetingsMessage) => \`\${greetingsMessage} Now you see how it works.\`, greetingsMessage)
   \`\`\`
 `
-
-let initialText = 'This is proof of concept for reactive programming components in Javascript. Each of react components listents to its owns object changes and updates on change event.'
-
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className='Block'>
+        <div className="Block">
           {initialText}
         </div>
         <InputBlock obj={name} msg={nameMarkdown} />
@@ -51,20 +50,25 @@ class App extends Component {
 }
 
 class BaseBlock extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.props.obj.on('change', () => this.forceUpdate());
+    this.props.obj.on('change', this.forceUpdate.bind(this));
   }
 }
 
 class InputBlock extends BaseBlock {
-  handleChange = (e) => {
-    this.props.obj.set(e.target.value)
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.props.obj.set(event.target.value)
   }
 
   render() {
     return (
-      <div className='Block'>
+      <div className="Block">
         <input value={this.props.obj._value} onChange={this.handleChange} />
         <Markdown source={this.props.msg}/>
       </div>
@@ -75,7 +79,7 @@ class InputBlock extends BaseBlock {
 class FormulaBlock extends BaseBlock {
   render() {
     return (
-      <div className='Block'>
+      <div className="Block">
         {this.props.obj.value()}
         <Markdown source={this.props.msg}/>
       </div>

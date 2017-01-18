@@ -1,10 +1,9 @@
-import _ from 'underscore';
+import underscore from 'underscore';
 import Backbone from 'backbone'
 
 export default class Base {
   constructor() {
-    _.extend(this, Backbone.Events);
+    this._isFormulante = true
+    underscore.extend(this, Backbone.Events);
   }
-
-  _isFormulante = true
 }
